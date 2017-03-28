@@ -4,9 +4,6 @@ spring:
   jmx:
     default-domain: 'order-app-jmx'
   datasource:
-    url: jdbc:mysql://localhost:3306/order_db?useSSL=false
-    username: root
-    password: password
     testWhileIdle: true
     validationQuery: SELECT 1
   jpa:

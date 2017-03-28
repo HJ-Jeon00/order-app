@@ -1,13 +1,13 @@
 package com.order.app.dao.types;
 
 import com.order.app.dao.AccountDao;
+import com.order.app.dao.BaseDao;
 import com.order.app.models.Account;
+import com.order.app.models.utilities.EncryptionUtil;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -16,11 +16,10 @@ import javax.transaction.Transactional;
  */
 @Repository
 @Transactional
-public class AccountDaoImpl implements AccountDao {
-
+public class AccountDaoImpl extends BaseDao implements AccountDao {
   @Override
   public void create(Account account) {
-    account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
+    account.setPassword(EncryptionUtil.encrypt(account.getPassword()));
     getSession().save(account);
   }
 
@@ -39,23 +38,27 @@ public class AccountDaoImpl implements AccountDao {
   }
 
   @Override
-  public Account login(Account account) {
-    Account loginAccount = (Account) getSession().createQuery(
-      "FROM Account WHERE username = :username")
-      .setParameter("username", account.getUsername())
-      .uniqueResult();
-    if (BCrypt.checkpw(account.getPassword(), loginAccount.getPassword())) {
-      return loginAccount;
-    } else {
-      return null;
-    }
+  public List<Account> getAll(){
+    return (List<Account>) getSession().createQuery("FROM Account").list();
   }
 
-  @Autowired
-  private SessionFactory _sessionFactory;
-
-  protected Session getSession() {
-    return _sessionFactory.getCurrentSession();
+  @Override
+  public Account login(Account inputAccount) {
+    Account loginAccount = null;
+    boolean authPass = false;
+    if (inputAccount != null) {
+      loginAccount = (Account) getSession().createQuery(
+        "FROM Account WHERE username = :username")
+        .setParameter("username", inputAccount.getUsername())
+        .uniqueResult();
+      if(loginAccount != null){
+        authPass = EncryptionUtil.checkPassword(inputAccount.getPassword(), loginAccount.getPassword());
+      }
+      if (!authPass) {
+        loginAccount = null;
+      }
+    }
+    return loginAccount;
   }
 
 }

@@ -25,6 +25,8 @@ public class Account {
   private String last_name;
   @NotNull
   private String email;
+  @NotNull
+  private String role;
 
   public Integer getUser_id() {
     return user_id;
@@ -47,7 +49,7 @@ public class Account {
   }
 
   public String getPassword() {
-    return password;
+      return password;
   }
 
   public String getFirst_name() {
@@ -72,5 +74,13 @@ public class Account {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
   }
 }
