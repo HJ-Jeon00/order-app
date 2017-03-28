@@ -26,7 +26,7 @@ port: 8080
 # Database
 db:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/order_db
+  url: jdbc:mysql://172.26.83.71:3306/order_db?useSSL=false
   username: root
   password: password
 

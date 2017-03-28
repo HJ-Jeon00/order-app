@@ -61,4 +61,6 @@ dependencies {
 
     // embedded server
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    /* plugins */
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.3.0.RELEASE'
 }
