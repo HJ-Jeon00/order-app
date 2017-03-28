@@ -12,4 +12,8 @@ CONFIG_SERVER_USER user <br>
 SPRING_PROFILES_ACTIVE default, native<br>
 
 
+To start the local config server: ./gradlew local-config:bootrun <br>
+To start the app: ./gradlew order:bootrun <br>
+
+
 
