@@ -1,0 +1,4 @@
+security:
+  user:
+    name: ${CONFIG_SERVER_USER}
+    password: ${CONFIG_SERVER_PASSWORD}

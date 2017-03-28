@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/ #located in the $rootDir/config
+
+server:
+  context-path: /config
+  port: 8888

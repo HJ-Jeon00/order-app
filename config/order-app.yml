@@ -1,0 +1,46 @@
+---
+# The values stored here are shared across all profiles
+spring:
+  jmx:
+    default-domain: 'order-app-jmx'
+  datasource:
+    url: jdbc:mysql://localhost:3306/order_db?useSSL=false
+    username: root
+    password: password
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    hibernate:
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+
+# embedded server
+server:
+  context-path: /order
+port: 8080
+
+# Database
+db:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/order_db
+  username: root
+  password: password
+
+# Hibernate
+hibernate:
+  dialect: org.hibernate.dialect.MySQL5Dialect
+  show_sql: true
+  hbm2ddl:
+    auto: update
+entitymanager:
+  packagesToScan: com.order.app.models
+
+
+
+
+
+

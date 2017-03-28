@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '1.3.6.RELEASE'
+        dependencyManagementVersion = '0.5.2.RELEASE'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    jcenter()
+}
+
+ext {
+    springCloudVersion = 'Brixton.SR4'
+    springBootVersion = '1.3.6.RELEASE'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs 'src/main/resources', "$rootDir/config"
+        }
+    }
+}
+
+configurations {
+    security {
+        extendsFrom compile
+    }
+}
+
+dependencies {
+    // simulate a config server
+    compile 'org.springframework.cloud:spring-cloud-config-server'
+
+    // simulate basic auth
+    //security 'org.springframework.boot:spring-boot-starter-security'
+    //security 'org.springframework.security.oauth:spring-security-oauth2'
+
+    // embedded server
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+}

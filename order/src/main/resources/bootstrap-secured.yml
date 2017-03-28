@@ -1,0 +1,7 @@
+---
+# will only be enabled if Spring profile active list has 'secured'
+spring:
+  cloud:
+    config:
+      username: ${CONFIG_SERVER_USER}
+      password: ${CONFIG_SERVER_PASSWORD}

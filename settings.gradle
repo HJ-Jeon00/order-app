@@ -1,0 +1,3 @@
+rootProject.name = 'order-app'
+include 'order'
+include 'local-config'

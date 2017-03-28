@@ -1,0 +1,87 @@
+// dependencies for command line
+buildscript {
+    ext {
+        springBootVersion = '1.3.6.RELEASE'
+        dependencyManagementVersion = '0.5.2.RELEASE'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// JDK 8
+sourceCompatibility = JavaVersion.VERSION_1_6
+targetCompatibility = JavaVersion.VERSION_1_6
+
+repositories {
+    jcenter()
+}
+
+ext {
+    springCloudVersion = 'Brixton.SR4'
+    springBootVersion = '1.3.6.RELEASE'
+    swaggerVersion = '2.4.0'
+    jodaTimeVersion = '2.9.4'
+    jacksonJodaVersion = '2.5.1'
+    junitVersion = '4.12'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+    }
+}
+
+dependencies {
+    /* client project libraries */
+    /*
+    place the client project name here
+    compile project(':source-service-name-client')
+    */
+
+    /* core libraries */
+    compile('org.springframework.cloud:spring-cloud-starter-config') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    compile('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    // logging
+    //compile('org.springframework.boot:spring-boot-starter-log4j2')
+    compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+
+    // embedded server
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+
+    // utilities
+    compile "io.springfox:springfox-swagger2:${swaggerVersion}"
+    compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+    compile "joda-time:joda-time:${jodaTimeVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonJodaVersion}"
+
+    /* database */
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.1.RELEASE'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.39'
+    //compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.5.Final'
+
+    /* plugins */
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.3.0.RELEASE'
+
+
+    /* test libraries */
+    testCompile "junit:junit:${junitVersion}"
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
