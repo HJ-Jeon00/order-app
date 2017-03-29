@@ -1,11 +1,14 @@
 package com.order.app.services.types;
 
 import com.order.app.dao.ProductDao;
+import com.order.app.mappers.ProductDisplayDataMapper;
 import com.order.app.models.Product;
 import com.order.app.models.ProductsResponse;
 import com.order.app.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by Joel.Gonzales on 3/29/2017.
@@ -14,15 +17,22 @@ import org.springframework.stereotype.Component;
 public class ProductServiceImpl implements ProductService{
 
   private ProductDao productDao;
+  private ProductDisplayDataMapper productDisplayDataMapper;
 
   @Autowired
-  public ProductServiceImpl(ProductDao productDao) {
+  public ProductServiceImpl(ProductDao productDao, ProductDisplayDataMapper productDisplayDataMapper) {
     this.productDao = productDao;
+    this.productDisplayDataMapper = productDisplayDataMapper;
   }
 
   @Override
   public ProductsResponse browse(String type) {
-    return productDao.browse(type);
+    ProductsResponse productsResponse = new ProductsResponse();
+    List<Product> products = productDao.browse(type);
+    if(products != null && !products.isEmpty()) {
+      productsResponse.setProducts(this.productDisplayDataMapper.map(products));
+    }
+    return productsResponse;
   }
 
   @Override

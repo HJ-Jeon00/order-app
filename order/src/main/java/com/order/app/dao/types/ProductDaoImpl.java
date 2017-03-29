@@ -2,7 +2,6 @@ package com.order.app.dao.types;
 
 import com.order.app.dao.ProductDao;
 import com.order.app.models.Product;
-import com.order.app.models.ProductsResponse;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,15 +19,11 @@ import java.util.List;
 public class ProductDaoImpl implements ProductDao {
 
   @Override
-  public ProductsResponse browse(String type) {
+  public List<Product> browse(String type) {
     Query query = getSession().createQuery("FROM Product WHERE type = :type");
     query.setParameter("type", type);
 
-    List<Product> products = query.list();
-
-    ProductsResponse productsResponse = new ProductsResponse();
-    productsResponse.setProducts(products);
-    return productsResponse;
+    return query.list();
   }
 
   @Override

@@ -1,5 +1,7 @@
 package com.order.app.models;
 
+import com.order.app.models.display.ProductDisplayData;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public class ProductsResponse {
 
-  private List<Product> products;
+  private List<ProductDisplayData> products;
 
-  public List<Product> getProducts() {
+  public List<ProductDisplayData> getProducts() {
     return products;
   }
 
-  public void setProducts(List<Product> products) {
+  public void setProducts(List<ProductDisplayData> products) {
     this.products = products;
   }
 }
