@@ -8,7 +8,7 @@ import java.util.List;
  * Created by bryan.bernabe on 3/27/2017.
  */
 public interface AccountDao {
-  void create(Account account);
+  boolean create(Account account);
 
   void update(Account account);
 

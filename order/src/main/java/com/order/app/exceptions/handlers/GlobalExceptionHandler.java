@@ -1,6 +1,7 @@
 package com.order.app.exceptions.handlers;
 
 import com.order.app.exceptions.BaseRuntimeException;
+import com.order.app.exceptions.DatabaseException;
 import com.order.app.exceptions.NoDataFoundException;
 import com.order.app.exceptions.SystemException;
 import com.order.app.models.Error;
@@ -25,6 +26,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(SystemException.class)
   @ResponseBody
   public ResponseEntity<Object> handleSystemException(SystemException exception) {
+    return new ResponseEntity<>(this.generateServiceErrorResponse(exception), HttpStatus
+      .INTERNAL_SERVER_ERROR);
+  }
+
+
+  @ExceptionHandler(DatabaseException.class)
+  @ResponseBody
+  public ResponseEntity<Object> handleSystemException(DatabaseException exception) {
     return new ResponseEntity<>(this.generateServiceErrorResponse(exception), HttpStatus
       .INTERNAL_SERVER_ERROR);
   }
