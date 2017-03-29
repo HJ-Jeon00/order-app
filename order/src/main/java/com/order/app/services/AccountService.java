@@ -9,7 +9,7 @@ import java.util.List;
  * Created by bryan.bernabe on 3/27/2017.
  */
 public interface AccountService {
-  void create(Account account);
+  boolean create(Account account);
   void update(Account account);
   AccountDisplayData findById(Integer userId);
   AccountDisplayData login(Account account);

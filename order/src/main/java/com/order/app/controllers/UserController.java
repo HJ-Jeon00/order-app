@@ -65,8 +65,8 @@ public class UserController {
     account.setFirst_name(firstName);
     account.setLast_name(lastName);
     account.setEmail(email);
-    accountService.create(account);
-    boolean result = true;
+    account.setRole(role);
+    boolean result = accountService.create(account);
     return new ResponseEntity<Boolean>(result, HttpStatus.OK);
   }
 

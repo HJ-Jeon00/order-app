@@ -28,8 +28,8 @@ public class AccountServiceImpl implements AccountService{
 
 
   @Override
-  public void create(Account account) {
-    accountDao.create(account);
+  public boolean create(Account account) {
+    return accountDao.create(account);
   }
 
   @Override
