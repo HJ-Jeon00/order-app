@@ -1,9 +1,9 @@
 package com.order.app.dao.types;
 
-import com.order.app.dao.AccountDao;
+import com.order.app.dao.UserDao;
 import com.order.app.dao.BaseDao;
 import com.order.app.exceptions.DatabaseException;
-import com.order.app.models.Account;
+import com.order.app.models.User;
 import com.order.app.models.utilities.EncryptionUtil;
 
 import org.hibernate.HibernateException;
@@ -20,18 +20,18 @@ import javax.transaction.Transactional;
  */
 @Repository
 @Transactional
-public class AccountDaoImpl extends BaseDao implements AccountDao {
+public class UserDaoImpl extends BaseDao implements UserDao {
 
   @Override
-  public boolean create(Account account) {
-    account.setPassword(EncryptionUtil.encrypt(account.getPassword()));
+  public boolean create(User user) {
+    user.setPassword(EncryptionUtil.encrypt(user.getPassword()));
 
     boolean result = true;
     Session session = null;
     try {
       session = super.sessionFactory.openSession();
       session.getTransaction().begin();
-      session.save(account);
+      session.save(user);
       session.getTransaction().commit();
     } catch (HibernateException e) {
       result = false;
@@ -46,19 +46,19 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
   }
 
   @Override
-  public void update(Account account) {
-    getSession().update(account);
+  public void update(User user) {
+    getSession().update(user);
   }
 
 
   @Override
-  public Account findById(Integer userId) {
+  public User findById(Integer userId) {
     Session session = null;
-    Account account = null;
+    User user = null;
     try {
       session = super.sessionFactory.openSession();
-      account = (Account) session.createQuery(
-        "FROM Account WHERE user_id = :userId")
+      user = (User) session.createQuery(
+        "FROM User WHERE user_id = :userId")
         .setParameter("userId", userId)
         .uniqueResult();
     } catch (HibernateException e) {
@@ -69,16 +69,16 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
       if (session != null)
         session.close();
     }
-    return account;
+    return user;
   }
 
   @Override
-  public List<Account> getAll() {
-    List<Account> accounts = null;
+  public List<User> getAll() {
+    List<User> users = null;
     Session session = null;
     try{
       session = super.sessionFactory.openSession();
-      accounts = (List<Account>) session.createQuery("FROM Account").list();
+      users = (List<User>) session.createQuery("FROM User").list();
     } catch (HibernateException e){
       List<String> errors = new ArrayList<>();
       errors.add(e.getCause().getMessage());
@@ -87,27 +87,27 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
       if (session != null)
         session.close();
     }
-    return accounts;
+    return users;
   }
 
   @Override
-  public Account login(Account inputAccount) {
-    Account loginAccount = null;
+  public User login(User inputUser) {
+    User loginUser = null;
     boolean authPass = false;
     Session session = null;
     try{
-      if (inputAccount != null) {
+      if (inputUser != null) {
         session = super.sessionFactory.openSession();
-        loginAccount = (Account) session.createQuery(
-          "FROM Account WHERE username = :username")
-          .setParameter("username", inputAccount.getUsername())
+        loginUser = (User) session.createQuery(
+          "FROM User WHERE username = :username")
+          .setParameter("username", inputUser.getUsername())
           .uniqueResult();
-        if (loginAccount != null) {
-          authPass = EncryptionUtil.checkPassword(inputAccount.getPassword(), loginAccount
+        if (loginUser != null) {
+          authPass = EncryptionUtil.checkPassword(inputUser.getPassword(), loginUser
             .getPassword());
         }
         if (!authPass) {
-          loginAccount = null;
+          loginUser = null;
         }
       }
     }catch (HibernateException e){
@@ -119,7 +119,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         session.close();
     }
 
-    return loginAccount;
+    return loginUser;
   }
 
 }

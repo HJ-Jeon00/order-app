@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
  * Created by bryan.bernabe on 3/27/2017.
  */
 @Entity
-@Table(name = "accounts")
-public class Account {
+@Table(name = "users")
+public class User {
 
   @Id
   @NotNull

@@ -1,8 +1,8 @@
 package com.order.app.controllers;
 
-import com.order.app.models.Account;
-import com.order.app.models.display.AccountDisplayData;
-import com.order.app.services.AccountService;
+import com.order.app.models.User;
+import com.order.app.models.display.UserDisplayData;
+import com.order.app.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,11 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "")
 public class UserController {
 
-  private AccountService accountService;
+  private UserService userService;
 
   @Autowired
-  public UserController(AccountService accountService) {
-    this.accountService = accountService;
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
 
   @RequestMapping(value = "/create",
@@ -58,15 +58,15 @@ public class UserController {
                                         @ApiParam(value = "User Role")
                                           @RequestParam(value = "role", required = false) String
                                             role) {
-    Account account = new Account();
-    account.setUser_id(userId);
-    account.setUsername(username);
-    account.setPassword(password);
-    account.setFirst_name(firstName);
-    account.setLast_name(lastName);
-    account.setEmail(email);
-    account.setRole(role);
-    boolean result = accountService.create(account);
+    User user = new User();
+    user.setUser_id(userId);
+    user.setUsername(username);
+    user.setPassword(password);
+    user.setFirst_name(firstName);
+    user.setLast_name(lastName);
+    user.setEmail(email);
+    user.setRole(role);
+    boolean result = userService.create(user);
     return new ResponseEntity<Boolean>(result, HttpStatus.OK);
   }
 
@@ -76,12 +76,12 @@ public class UserController {
     method = RequestMethod.GET)
   @ApiOperation(value = "Find by ID.", notes = "",
     response = Boolean.class, tags = {"User Details",})
-  public ResponseEntity<AccountDisplayData> findById(@ApiParam(value = "User ID")
+  public ResponseEntity<UserDisplayData> findById(@ApiParam(value = "User ID")
                                           @RequestParam(value = "user_id", required = true)
                                             Integer userId
   ) {
-    AccountDisplayData account = accountService.findById(userId);
-    return new ResponseEntity<AccountDisplayData>(account, HttpStatus.OK);
+    UserDisplayData account = userService.findById(userId);
+    return new ResponseEntity<UserDisplayData>(account, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/login",
@@ -89,19 +89,19 @@ public class UserController {
     method = RequestMethod.POST)
   @ApiOperation(value = "User login.", notes = "",
     response = Boolean.class, tags = {"User Details",})
-  public ResponseEntity<AccountDisplayData> login(@ApiParam(value = "User ID")
+  public ResponseEntity<UserDisplayData> login(@ApiParam(value = "User ID")
                                        @RequestParam(value = "username", required = true)
                                          String username,
-                                       @ApiParam(value = "User ID")
+                                               @ApiParam(value = "User ID")
                                        @RequestParam(value = "password", required = true)
                                          String password
   ) {
 
-    Account account = new Account();
-    account.setUsername(username);
-    account.setPassword(password);
-    AccountDisplayData loginAccount = accountService.login(account);
-    return new ResponseEntity<AccountDisplayData>(loginAccount, HttpStatus.OK);
+    User user = new User();
+    user.setUsername(username);
+    user.setPassword(password);
+    UserDisplayData loginAccount = userService.login(user);
+    return new ResponseEntity<UserDisplayData>(loginAccount, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/getAll",
@@ -109,8 +109,8 @@ public class UserController {
     method = RequestMethod.GET)
   @ApiOperation(value = "Find by ID.", notes = "",
     response = Boolean.class, tags = {"User Details",})
-  public ResponseEntity<List<AccountDisplayData>> findById() {
-    List<AccountDisplayData> accounts = accountService.getAll();
-    return new ResponseEntity<List<AccountDisplayData>>(accounts, HttpStatus.OK);
+  public ResponseEntity<List<UserDisplayData>> findById() {
+    List<UserDisplayData> accounts = userService.getAll();
+    return new ResponseEntity<List<UserDisplayData>>(accounts, HttpStatus.OK);
   }
 }

@@ -3,7 +3,7 @@ package com.order.app.models.display;
 /**
  * Created by bryan.bernabe on 3/28/2017.
  */
-public class AccountDisplayData {
+public class UserDisplayData {
 
   private Integer userId;
   private String username;
